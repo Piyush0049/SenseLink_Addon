@@ -1,0 +1,27 @@
+{
+    "testId": "facecontrol-addon-2024",
+    "name": "FaceControl",
+    "version": "1.0.0",
+    "manifestVersion": 2,
+    "hostAppClientId": "a08fef04b4424fb9878f3f6e1579843b",
+    "requirements": {
+        "apps": [
+            {
+                "name": "Express",
+                "apiVersion": 1
+            }
+        ]
+    },
+    "entryPoints": [
+        {
+            "type": "panel",
+            "id": "faceControlPanel",
+            "main": "index.html",
+            "permissions": {
+                "camera": "*",
+                "microphone": "*"
+            },
+            "documentSandbox": "code.js"
+        }
+    ]
+}

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FaceControl</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                        <circle cx="16" cy="16" r="14" stroke="url(#grad1)" stroke-width="2.5" />
+                        <circle cx="16" cy="16" r="6" fill="url(#grad1)" />
+                        <defs>
+                            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#a78bfa" />
+                                <stop offset="100%" style="stop-color:#06b6d4" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="logo-text">
+                    <h1>FaceControl</h1>
+                </div>
+            </div>
+            <div class="connection-badge" id="connectionStatus">
+                <span class="connection-dot" id="connectionDot"></span>
+                <span id="connectionText">Offline</span>
+            </div>
+        </header>
+
+        <!-- Camera Section -->
+        <section class="camera-section">
+            <div class="camera-card">
+                <div class="camera-wrapper">
+                    <video id="videoFeed" autoplay playsinline muted></video>
+                    <canvas id="overlayCanvas"></canvas>
+
+                    <div class="placeholder" id="placeholder">
+                        <div class="placeholder-icon">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                                <circle cx="12" cy="13" r="4" />
+                            </svg>
+                        </div>
+                        <p class="placeholder-text">Enable camera to start</p>
+                        <p class="placeholder-hint">Your face controls the cursor</p>
+                    </div>
+
+                    <div class="tracking-badge" id="trackingBadge">
+                        <span class="pulse-ring"></span>
+                        <span class="pulse-dot"></span>
+                        <span>LIVE</span>
+                    </div>
+
+                    <div class="position-display" id="positionBadge">
+                        <span class="position-label">CURSOR</span>
+                        <span class="position-value" id="positionDisplay">---, ---</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Controls -->
+        <section class="controls-section">
+            <button class="btn btn-primary" id="startBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="5,3 19,12 5,21" />
+                </svg>
+                <span>Start</span>
+            </button>
+            <button class="btn btn-danger" id="stopBtn" style="display: none;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="6" y="6" width="12" height="12" rx="2" />
+                </svg>
+                <span>Stop</span>
+            </button>
+            <button class="btn btn-secondary" id="calibrateBtn" disabled>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10" />
+                    <circle cx="12" cy="12" r="3" />
+                    <line x1="12" y1="2" x2="12" y2="6" />
+                    <line x1="12" y1="18" x2="12" y2="22" />
+                    <line x1="2" y1="12" x2="6" y2="12" />
+                    <line x1="18" y1="12" x2="22" y2="12" />
+                </svg>
+                <span>Calibrate</span>
+            </button>
+        </section>
+
+        <!-- Speech-to-Text Section (Permanent) -->
+        <section class="speech-section">
+            <div class="speech-controls">
+                <button class="btn btn-speak" id="speakBtn" aria-label="Toggle speech recognition">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                        <line x1="12" y1="19" x2="12" y2="23" />
+                        <line x1="8" y1="23" x2="16" y2="23" />
+                    </svg>
+                    <span>Speak</span>
+                </button>
+                <div class="speech-status" id="speechStatus">
+                    <span class="speech-indicator"></span>
+                    <span id="speechStatusText">Ready</span>
+                </div>
+            </div>
+            <div class="transcription-area">
+                <label for="targetTranscriptArea" class="transcription-label">Transcription Area</label>
+                <textarea id="targetTranscriptArea" placeholder="Speak to type here... Click 'Speak' and start talking."
+                    aria-label="Transcription text area"></textarea>
+            </div>
+        </section>
+
+        <!-- Image Search Section -->
+        <section class="image-search-section">
+            <div class="panel-header">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <polyline points="21 15 16 10 5 21"/>
+                </svg>
+                <span>Image Search & Insert</span>
+            </div>
+
+            <!-- AI Suggestion Button -->
+            <button class="btn-suggest" id="suggestImagesBtn">
+                <span class="btn-icon">🔮</span>
+                <span class="btn-text">Get Image Suggestions</span>
+                <span class="btn-subtext">AI analyzes your canvas to find matching photos</span>
+            </button>
+
+            <!-- AI Insight Display -->
+            <div class="ai-insight" id="aiInsight" style="display: none;">
+                <span class="insight-icon">💡</span>
+                <span class="insight-text" id="aiInsightText">Analyzing...</span>
+            </div>
+
+            <!-- Manual Search -->
+            <div class="manual-search-divider">
+                <span>or search manually</span>
+            </div>
+
+            <div class="image-search-controls">
+                <input type="text" 
+                       id="imageSearchInput" 
+                       class="image-search-input"
+                       placeholder="Type what you need... (e.g. sunset beach)"
+                       aria-label="Image search query">
+                <button class="btn btn-search" id="searchImagesBtn" aria-label="Search images">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.3-4.3"/>
+                    </svg>
+                    <span>Search</span>
+                </button>
+            </div>
+
+            <!-- Image Gallery Grid -->
+            <div class="image-gallery" id="imageGallery">
+                <div class="gallery-placeholder">
+                    <div class="gallery-placeholder-icon">🖼️</div>
+                    <p>Type what you need and click Search</p>
+                    <p class="gallery-hint">Click any image to add to canvas</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Design Advisor Section -->
+        <section class="advisor-section">
+            <div class="panel-header">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                </svg>
+                <span>Website Design Advisor</span>
+            </div>
+
+            <button class="btn-advisor" id="analyzeDesignBtn">
+                <span class="btn-icon">✨</span>
+                <span class="btn-text">Analyze Full Design</span>
+                <span class="btn-subtext">Layout, UX & Accessibility</span>
+            </button>
+
+            <button class="btn-advisor btn-improve" id="improveDesignBtn">
+                <span class="btn-icon">🚀</span>
+                <span class="btn-text">Improve Design</span>
+                <span class="btn-subtext">Auto-apply AI suggestions</span>
+            </button>
+
+            <!-- Advisor Result Modal/Overlay -->
+            <div class="advisor-result" id="advisorResult" style="display: none;">
+                <div class="advisor-header">
+                    <h3>Design Intelligence</h3>
+                    <button class="close-advisor" id="closeAdvisorBtn">&times;</button>
+                </div>
+                <div class="advisor-content" id="advisorContent">
+                    <div class="advisor-loading">
+                        <span class="loader"></span>
+                        <p>Scanning visual hierarchy...</p>
+                    </div>
+                    <!-- Results will be injected here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Inspector -->
+        <div class="inspector-card" id="inspectorCard">
+            <div class="inspector-header">
+                <span class="inspector-title" id="inspectName">Inspecting...</span>
+                <span class="inspector-badge">AI ANALYZED</span>
+            </div>
+            <div class="inspector-body" id="inspectReason">Analyzing element...</div>
+            <div class="inspector-grid">
+                <div class="meta-item">
+                    <span class="meta-label">Mood</span>
+                    <span class="meta-value" id="inspectMood">--</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Confidence</span>
+                    <span class="meta-value">High</span>
+                </div>
+            </div>
+            <div class="loading-pulse" id="inspectLoading" style="display: none;"></div>
+        </div>
+
+        <!-- Status Grid -->
+        <section class="status-grid">
+            <div class="status-card">
+                <div class="status-icon-wrapper">
+                    <span class="status-icon">👁️</span>
+                </div>
+                <div class="status-info">
+                    <span class="status-label">Face Detection</span>
+                    <span class="status-value" id="faceStatus">Waiting...</span>
+                </div>
+            </div>
+            <div class="status-card">
+                <div class="status-icon-wrapper">
+                    <span class="status-icon">👀</span>
+                </div>
+                <div class="status-info">
+                    <span class="status-label">Eye Status</span>
+                    <span class="status-value" id="mouthStatus">---</span>
+                </div>
+            </div>
+            <div class="status-card">
+                <div class="status-icon-wrapper">
+                    <span class="status-icon">🖱️</span>
+                </div>
+                <div class="status-info">
+                    <span class="status-label">Cursor Position</span>
+                    <span class="status-value" id="cursorStatus">Idle</span>
+                </div>
+            </div>
+            <div class="status-card">
+                <div class="status-icon-wrapper clicks">
+                    <span class="status-icon">👆</span>
+                </div>
+                <div class="status-info">
+                    <span class="status-label">Total Clicks</span>
+                    <span class="status-value highlight" id="clickCount">0</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings Panel -->
+        <section class="settings-panel">
+            <div class="panel-header">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3" />
+                    <path
+                        d="M12 1v4m0 14v4M4.22 4.22l2.83 2.83m9.9 9.9l2.83 2.83M1 12h4m14 0h4M4.22 19.78l2.83-2.83m9.9-9.9l2.83-2.83" />
+                </svg>
+                <span>Settings</span>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <span class="setting-label">Sensitivity</span>
+                    <span class="setting-desc">Control movement range</span>
+                </div>
+                <div class="setting-control">
+                    <input type="range" id="sensitivitySlider" min="0.5" max="3" step="0.1" value="2">
+                    <span class="setting-value" id="sensitivityValue">2.0</span>
+                </div>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <span class="setting-label">Smoothness</span>
+                    <span class="setting-desc">Cursor movement fluidity</span>
+                </div>
+                <div class="setting-control">
+                    <input type="range" id="smoothingSlider" min="0.1" max="0.9" step="0.1" value="0.4">
+                    <span class="setting-value" id="smoothingValue">0.4</span>
+                </div>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <span class="setting-label">Show Tracking</span>
+                    <span class="setting-desc">Display face mesh overlay</span>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="meshToggle" checked>
+                    <span class="toggle-track"></span>
+                </label>
+            </div>
+        </section>
+
+        <!-- Gestures Guide -->
+        <section class="gestures-panel">
+            <div class="panel-header">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 9V5a3 3 0 0 0-6 0v4" />
+                    <path d="M5 12v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6" />
+                </svg>
+                <span>Gesture Controls</span>
+            </div>
+
+            <div class="gesture-grid">
+                <div class="gesture-card">
+                    <div class="gesture-icon">↔️</div>
+                    <div class="gesture-text">
+                        <span class="gesture-action">Move Head</span>
+                        <span class="gesture-result">Move Cursor</span>
+                    </div>
+                </div>
+                <div class="gesture-card">
+                    <div class="gesture-icon">👄</div>
+                    <div class="gesture-text">
+                        <span class="gesture-action">Open Mouth</span>
+                        <span class="gesture-result">Left Click</span>
+                    </div>
+                </div>
+                <div class="gesture-card">
+                    <div class="gesture-icon">😉</div>
+                    <div class="gesture-text">
+                        <span class="gesture-action">Wink Eye</span>
+                        <span class="gesture-result">Click</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <span>FaceControl</span>
+            <span class="divider">•</span>
+            <span>Hands-Free Mouse Control</span>
+        </footer>
+    </div>
+
+    <!-- Feedback Toast -->
+    <div class="feedback-toast" id="feedback"></div>
+
+    <!-- MediaPipe -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    <!-- Adobe Express Add-on SDK -->
+    <script src="https://new.express.adobe.com/static/add-on-libs/1.12.0/addOnUISdk.js"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>
