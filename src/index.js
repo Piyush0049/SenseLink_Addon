@@ -195,6 +195,8 @@ const state = {
     targetTextArea: null,               // Locked text area for transcription
     lastFocusedTextArea: null,          // Track last focused editable element
     speechDebounceTimer: null,          // 250ms silence debounce timer
+    lastSpeechActivityTime: 0,          // Timestamp of last speech activity (for debouncing)
+    speechInactivityCheckInterval: null, // Interval to check for inactivity
     trackingPaused: false,              // Flag to pause tracking during speech
 
     // Tracking state preservation (for restoring after speech)
@@ -759,11 +761,6 @@ function handleExplanation(data) {
     elements.inspectName.textContent = data.name;
     elements.inspectReason.textContent = data.reason;
     elements.inspectMood.textContent = data.mood;
-
-    // Flash success
-    showFeedback(`⚡ ${latency}ms`);
-    // Flash success
-    showFeedback(`⚡ ${latency}ms`);
 }
 
 // ----------------------------------------------------
@@ -1777,7 +1774,8 @@ function calibrate() {
 // Speech Recognition (Speech-to-Text Dictation)
 // ============================================
 
-const SPEECH_DEBOUNCE_MS = 250; // Debounce window for speech pause detection
+const SPEECH_DEBOUNCE_MS = 1500; // Debounce window for speech pause detection
+const SPEECH_INACTIVITY_CHECK_MS = 50; // How often to check for speech inactivity
 
 /**
  * Initialize Web Speech API for continuous recognition
@@ -1813,6 +1811,10 @@ function initSpeechRecognition() {
  */
 function onSpeechResult(event) {
     if (!state.speaking) return;
+
+    // Mark speech activity - this extends the debounce window
+    state.lastSpeechActivityTime = Date.now();
+    console.log('🎤 Speech activity detected, resetting inactivity timer');
 
     // Reset debounce timer on any speech activity
     resetSpeechDebounce();
@@ -1935,31 +1937,23 @@ function sendType(text) {
 
 /**
  * Handle speech recognition end - implement 250ms debounce
+ * This fires when the Web Speech API's recognition session ends
+ * We restart it immediately and rely on inactivity checking for final stop
  */
 function onSpeechEnd() {
-    console.log('🎤 Speech recognition ended, starting debounce...');
+    console.log('🎤 Speech recognition session ended');
 
     // Don't process if not in speaking mode
     if (!state.speaking) return;
 
-    // Start 250ms debounce window
-    resetSpeechDebounce();
-
-    state.speechDebounceTimer = setTimeout(() => {
-        // After 250ms silence, check if we should stop speaking
-        if (state.speaking) {
-            console.log('🎤 250ms silence detected, finalizing speech stop');
-            finalizeSpeechStop();
-        }
-    }, SPEECH_DEBOUNCE_MS);
-
-    // Try to restart recognition to continue listening (continuous mode)
-    if (state.speaking) {
-        try {
-            state.speechRecognition.start();
-        } catch (e) {
-            // May already be running, that's fine
-        }
+    // Try to restart recognition immediately to continue listening
+    // The inactivity checker will handle final stop after 250ms silence
+    try {
+        state.speechRecognition.start();
+        console.log('🎤 Speech recognition restarted for continuous listening');
+    } catch (e) {
+        // May already be running, that's fine
+        console.log('🎤 Could not restart (may already be running):', e.message);
     }
 }
 
@@ -1970,6 +1964,46 @@ function resetSpeechDebounce() {
     if (state.speechDebounceTimer) {
         clearTimeout(state.speechDebounceTimer);
         state.speechDebounceTimer = null;
+    }
+}
+
+/**
+ * Start the speech inactivity checker interval
+ * This continuously checks if 250ms have passed since last speech activity
+ */
+function startSpeechInactivityChecker() {
+    // Clear any existing interval
+    stopSpeechInactivityChecker();
+
+    // Initialize last activity time
+    state.lastSpeechActivityTime = Date.now();
+
+    // Start checking for inactivity every 50ms
+    state.speechInactivityCheckInterval = setInterval(() => {
+        if (!state.speaking) {
+            stopSpeechInactivityChecker();
+            return;
+        }
+
+        const timeSinceLastActivity = Date.now() - state.lastSpeechActivityTime;
+
+        if (timeSinceLastActivity >= SPEECH_DEBOUNCE_MS) {
+            console.log(`🎤 ${SPEECH_DEBOUNCE_MS}ms of inactivity detected - stopping speech recognition`);
+            finalizeSpeechStop();
+        }
+    }, SPEECH_INACTIVITY_CHECK_MS);
+
+    console.log('🎤 Speech inactivity checker started');
+}
+
+/**
+ * Stop the speech inactivity checker interval
+ */
+function stopSpeechInactivityChecker() {
+    if (state.speechInactivityCheckInterval) {
+        clearInterval(state.speechInactivityCheckInterval);
+        state.speechInactivityCheckInterval = null;
+        console.log('🎤 Speech inactivity checker stopped');
     }
 }
 
@@ -2050,6 +2084,9 @@ function startSpeaking() {
         elements.speechStatusText.textContent = 'Listening...';
     }
 
+    // Start the inactivity checker for debouncing
+    startSpeechInactivityChecker();
+
     // Start speech recognition
     try {
         state.speechRecognition.start();
@@ -2086,9 +2123,22 @@ function stopSpeaking() {
 function finalizeSpeechStop() {
     console.log('🎤 Finalizing speech stop');
 
+    // Stop the inactivity checker
+    stopSpeechInactivityChecker();
+
+    // Stop speech recognition
+    if (state.speechRecognition) {
+        try {
+            state.speechRecognition.stop();
+        } catch (e) {
+            // Ignore
+        }
+    }
+
     // Clear speaking state
     state.speaking = false;
     state.targetTextArea = null;
+    state.lastSpeechActivityTime = 0;
     resetSpeechDebounce();
 
     // RESUME the "Analyze" background listener
