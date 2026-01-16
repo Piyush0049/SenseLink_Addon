@@ -127,9 +127,9 @@
         <section class="image-search-section">
             <div class="panel-header">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                    <circle cx="8.5" cy="8.5" r="1.5"/>
-                    <polyline points="21 15 16 10 5 21"/>
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                    <circle cx="8.5" cy="8.5" r="1.5" />
+                    <polyline points="21 15 16 10 5 21" />
                 </svg>
                 <span>Image Search & Insert</span>
             </div>
@@ -153,15 +153,12 @@
             </div>
 
             <div class="image-search-controls">
-                <input type="text" 
-                       id="imageSearchInput" 
-                       class="image-search-input"
-                       placeholder="Type what you need... (e.g. sunset beach)"
-                       aria-label="Image search query">
+                <input type="text" id="imageSearchInput" class="image-search-input"
+                    placeholder="Type what you need... (e.g. sunset beach)" aria-label="Image search query">
                 <button class="btn btn-search" id="searchImagesBtn" aria-label="Search images">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"/>
-                        <path d="m21 21-4.3-4.3"/>
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="m21 21-4.3-4.3" />
                     </svg>
                     <span>Search</span>
                 </button>
@@ -190,12 +187,6 @@
                 <span class="btn-icon">✨</span>
                 <span class="btn-text">Analyze Full Design</span>
                 <span class="btn-subtext">Layout, UX & Accessibility</span>
-            </button>
-
-            <button class="btn-advisor btn-improve" id="improveDesignBtn">
-                <span class="btn-icon">🚀</span>
-                <span class="btn-text">Improve Design</span>
-                <span class="btn-subtext">Auto-apply AI suggestions</span>
             </button>
 
             <!-- Advisor Result Modal/Overlay -->
@@ -245,33 +236,6 @@
                     <span class="status-value" id="faceStatus">Waiting...</span>
                 </div>
             </div>
-            <div class="status-card">
-                <div class="status-icon-wrapper">
-                    <span class="status-icon">👀</span>
-                </div>
-                <div class="status-info">
-                    <span class="status-label">Eye Status</span>
-                    <span class="status-value" id="mouthStatus">---</span>
-                </div>
-            </div>
-            <div class="status-card">
-                <div class="status-icon-wrapper">
-                    <span class="status-icon">🖱️</span>
-                </div>
-                <div class="status-info">
-                    <span class="status-label">Cursor Position</span>
-                    <span class="status-value" id="cursorStatus">Idle</span>
-                </div>
-            </div>
-            <div class="status-card">
-                <div class="status-icon-wrapper clicks">
-                    <span class="status-icon">👆</span>
-                </div>
-                <div class="status-info">
-                    <span class="status-label">Total Clicks</span>
-                    <span class="status-value highlight" id="clickCount">0</span>
-                </div>
-            </div>
         </section>
 
         <!-- Settings Panel -->
@@ -306,17 +270,6 @@
                     <span class="setting-value" id="smoothingValue">0.4</span>
                 </div>
             </div>
-
-            <div class="setting-item">
-                <div class="setting-info">
-                    <span class="setting-label">Show Tracking</span>
-                    <span class="setting-desc">Display face mesh overlay</span>
-                </div>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="meshToggle" checked>
-                    <span class="toggle-track"></span>
-                </label>
-            </div>
         </section>
 
         <!-- Gestures Guide -->
@@ -331,7 +284,7 @@
 
             <div class="gesture-grid">
                 <div class="gesture-card">
-                    <div class="gesture-icon">↔️</div>
+                    <div class="gesture-icon">🔄</div>
                     <div class="gesture-text">
                         <span class="gesture-action">Move Head</span>
                         <span class="gesture-result">Move Cursor</span>
@@ -345,10 +298,17 @@
                     </div>
                 </div>
                 <div class="gesture-card">
-                    <div class="gesture-icon">😉</div>
+                    <div class="gesture-icon">😮</div>
                     <div class="gesture-text">
-                        <span class="gesture-action">Wink Eye</span>
-                        <span class="gesture-result">Click</span>
+                        <span class="gesture-action">Keep Mouth Open</span>
+                        <span class="gesture-result">Drag & Select</span>
+                    </div>
+                </div>
+                <div class="gesture-card">
+                    <div class="gesture-icon">😑</div>
+                    <div class="gesture-text">
+                        <span class="gesture-action">Blink Both Eyes</span>
+                        <span class="gesture-result">Right Click</span>
                     </div>
                 </div>
             </div>

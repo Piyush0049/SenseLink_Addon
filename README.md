@@ -72,10 +72,10 @@
 
 | Gesture | Action | Description |
 |:-------:|:------:|-------------|
-| ↔️ | **Move Head** | Move Cursor around the screen |
-| 👄 | **Open Mouth** | Perform a Left Click |
-| 😉 | **Blink Both Eyes** | Perform a Right Click |
-| 😮 | **Hold Mouth Open** | Drag & Select (hold left click) |
+| 🔄 | **Move Head** | Move your head to control cursor position |
+| 👄 | **Open Mouth** | Quick mouth open performs a **Left Click** |
+| 😮 | **Keep Mouth Open** | Hold mouth open to **Drag & Select** |
+| 😑 | **Blink Both Eyes** | Blink both eyes together for **Right Click** |
 
 ### How It Works
 
@@ -93,10 +93,10 @@
 
 | Action | How To Perform | Cooldown |
 |--------|----------------|----------|
-| **Left Click** | Open mouth quickly (brief) | 500ms |
-| **Right Click** | Blink both eyes at the same time | 600ms |
-| **Drag/Select** | Open mouth and hold for 1+ second | - |
-| **Move Cursor** | Tilt your head in any direction | Real-time |
+| **Move Cursor** | Move your head left/right/up/down | Real-time |
+| **Left Click** | Open your mouth briefly | 500ms |
+| **Drag & Select** | Keep your mouth open (hold) | - |
+| **Right Click** | Blink both eyes simultaneously | 600ms |
 
 ---
 
