@@ -761,11 +761,6 @@ function handleExplanation(data) {
     elements.inspectName.textContent = data.name;
     elements.inspectReason.textContent = data.reason;
     elements.inspectMood.textContent = data.mood;
-
-    // Flash success
-    showFeedback(`⚡ ${latency}ms`);
-    // Flash success
-    showFeedback(`⚡ ${latency}ms`);
 }
 
 // ----------------------------------------------------
