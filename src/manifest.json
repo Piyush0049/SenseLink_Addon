@@ -1,6 +1,6 @@
 {
-    "testId": "facecontrol-addon-2024",
-    "name": "FaceControl",
+    "testId": "senselink-addon-2024",
+    "name": "SenseLink",
     "version": "1.0.0",
     "manifestVersion": 2,
     "hostAppClientId": "a08fef04b4424fb9878f3f6e1579843b",
@@ -15,7 +15,7 @@
     "entryPoints": [
         {
             "type": "panel",
-            "id": "faceControlPanel",
+            "id": "senseLinkPanel",
             "main": "index.html",
             "permissions": {
                 "camera": "*",

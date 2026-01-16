@@ -1,7 +1,7 @@
 {
-    "name": "my-first-addon",
+    "name": "senselink-addon",
     "version": "1.0.0",
-    "description": "Adobe Creative Cloud Web Add-on.",
+    "description": "SenseLink - Hands-free accessibility addon for Adobe Express.",
     "scripts": {
         "clean": "ccweb-add-on-scripts clean",
         "build": "ccweb-add-on-scripts build",
