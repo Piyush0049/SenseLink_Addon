@@ -298,11 +298,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     checkBackend();
     getScreenSize();
-    console.log('🎯 FaceControl with Wink Detection Ready');
-    console.log('🎤 Speech-to-Text Dictation Ready');
-    startVoiceRecognition(); // Start listenting for "Analyze 1234"
+    console.log('🎯 SenseLink - Hands-Free Control Ready');
     initDocumentSandbox(); // Initialize Document Sandbox for canvas manipulation
-    console.log('🎯 FaceControl with Voice Command Ready');
 });
 
 // ============================================
@@ -1273,88 +1270,7 @@ function renderImprovementSuggestions(data) {
     return html;
 }
 
-// ============================================
-// Voice Recognition Trigger (Continuous & Robust)
-// ============================================
 
-let recognition = null;
-let isVoiceActive = false;
-
-function startVoiceRecognition() {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-        console.error("❌ Voice Control NOT supported.");
-        return;
-    }
-
-    // Prevent duplicate instances
-    if (recognition) {
-        try { recognition.stop(); } catch (e) { }
-    }
-
-    recognition = new SpeechRecognition();
-    recognition.continuous = true;      // Keep listening
-    recognition.interimResults = false; // Only final results
-    recognition.lang = 'en-US';
-
-    recognition.onstart = () => {
-        isVoiceActive = true;
-        console.log("🎤 Microphone ON. Listening for 'Analyze 1 2 3 4'...");
-    };
-
-    recognition.onresult = (event) => {
-        // Iterate through ALL new results
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-            const transcript = event.results[i][0].transcript.trim().toLowerCase();
-            console.log(`🎤 Heard: "${transcript}"`);
-
-            // SIMPLIFIED: Just 'analyze' or 'analyse'
-            const isMatch = transcript.includes('analyze') || transcript.includes('analyse');
-
-            if (isMatch) {
-                console.log(`🚀 VOICE TRIGGER RECOGNIZED: "${transcript}"`);
-                showFeedback("🎤 Analyzing...");
-                triggerAnalysis(state.finalX || 0, state.finalY || 0);
-            }
-        }
-    };
-
-    recognition.onerror = (event) => {
-        if (event.error === 'not-allowed') {
-            showFeedback("⚠️ Mic Denied");
-            isVoiceActive = false;
-        } else {
-            console.warn("🎤 Voice Glitch:", event.error);
-            isVoiceActive = false; // Flag as dead so watchdog revives it
-        }
-    };
-
-    recognition.onend = () => {
-        isVoiceActive = false;
-        // Don't restart if we are in dictation mode (state.speaking)
-        if (state.speaking) {
-            console.log("🎤 Voice stopped (Dictation Active). Waiting for dictation to finish...");
-            return;
-        }
-        console.log("🎤 Voice stopped. RESTARTING INSTANTLY...");
-        try { recognition.start(); } catch (e) { }
-    };
-
-    try {
-        recognition.start();
-    } catch (e) {
-        console.error("Mic start failed", e);
-    }
-}
-
-// 🩸 HEARTBEAT: Revive mic every 2 seconds if dead
-setInterval(() => {
-    // Only revive if NOT in dictation mode
-    if (!isVoiceActive && recognition && !state.speaking) {
-        console.log("💗 Heartbeat: Reviving Mic...");
-        try { recognition.start(); } catch (e) { }
-    }
-}, 2000);
 
 
 // ============================================
@@ -2072,13 +1988,6 @@ function startSpeaking() {
     // Pause ALL tracking - this is the authoritative speaking state
     state.speaking = true;
 
-    // STOP the "Analyze" background listener so it doesn't fight for mic
-    if (recognition) {
-        console.log("🎤 Pausing 'Analyze' listener to allow dictation...");
-        isVoiceActive = false;
-        try { recognition.stop(); } catch (e) { }
-    }
-
     state.trackingPaused = true;
 
     // Update UI
@@ -2143,12 +2052,6 @@ function finalizeSpeechStop() {
     state.targetTextArea = null;
     state.lastSpeechActivityTime = 0;
     resetSpeechDebounce();
-
-    // RESUME the "Analyze" background listener
-    if (recognition) {
-        console.log("🎤 Restarting 'Analyze' continuous listener...");
-        try { recognition.start(); } catch (e) { }
-    }
 
     // Update UI
     updateSpeakButtonUI(false);
