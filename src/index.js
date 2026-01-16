@@ -13,9 +13,6 @@ const CONFIG = {
     screenHeight: 1080
 };
 
-// ============================================
-// Adobe Express Add-on SDK Integration
-// ============================================
 
 let addOnUISdk = null;
 let sandboxProxy = null; // Proxy to communicate with document sandbox
