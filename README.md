@@ -1,22 +1,17 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Adobe_Express-Add--on-FF0000?style=for-the-badge&logo=adobe&logoColor=white" alt="Adobe Express Add-on"/>
-  <img src="https://img.shields.io/badge/MediaPipe-Face_Mesh-00AA00?style=for-the-badge&logo=google&logoColor=white" alt="MediaPipe"/>
+  <img src="https://img.shields.io/badge/MediaPipe-Face_Mesh-4285F4?style=for-the-badge&logo=google&logoColor=white" alt="MediaPipe"/>
   <img src="https://img.shields.io/badge/Hugging_Face-AI-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black" alt="Hugging Face"/>
   <img src="https://img.shields.io/badge/Unsplash-API-000000?style=for-the-badge&logo=unsplash&logoColor=white" alt="Unsplash"/>
 </p>
 
 <h1 align="center">
-
-  <br>
-  <a href="#"><img src="https://i.imgur.com/7e2QxOV.png" alt="SenseLink Logo" width="120"></a>
-  <br>
   🧠 SenseLink
-  <br>
 </h1>
 
-<h4 align="center">
+<h3 align="center">
   Hands-Free Cursor Control for Adobe Express — Powered by Face Expressions & AI
-</h4>
+</h3>
 
 <p align="center">
   <a href="#-features">Features</a> •
@@ -29,7 +24,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/version-1.0.0-blue?style=flat-square" alt="Version"/>
-  <img src="https://img.shields.io/badge/license-Educational-green?style=flat-square" alt="License"/>
+  <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License"/>
   <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey?style=flat-square" alt="Platform"/>
 </p>
 
@@ -40,10 +35,6 @@
 **SenseLink** is a revolutionary **hands-free accessibility add-on** for **Adobe Express** that empowers users to control their mouse cursor using only **facial expressions**. Designed for individuals with motor impairments, RSI, or anyone seeking an alternative input method, SenseLink transforms your face into a fully-functional mouse controller.
 
 > 🎯 **No hardware required** — just your webcam and your face!
-
-<p align="center">
-  <img src="https://i.imgur.com/placeholder-demo.gif" alt="SenseLink Demo" width="600"/>
-</p>
 
 ---
 
@@ -78,32 +69,15 @@
 
 ## 🎮 Gesture Controls
 
-<table>
-  <tr>
-    <td align="center" width="25%">
-      <img src="https://em-content.zobj.net/source/apple/391/left-right-arrow_2194-fe0f.png" width="64"/><br/>
-      <b>Move Head</b><br/>
-      <sub>Move Cursor</sub>
-    </td>
-    <td align="center" width="25%">
-      <img src="https://em-content.zobj.net/source/apple/391/mouth_1fae6.png" width="64"/><br/>
-      <b>Open Mouth</b><br/>
-      <sub>Left Click</sub>
-    </td>
-    <td align="center" width="25%">
-      <img src="https://em-content.zobj.net/source/apple/391/face-with-peeking-eye_1fae3.png" width="64"/><br/>
-      <b>Blink Both Eyes</b><br/>
-      <sub>Right Click</sub>
-    </td>
-    <td align="center" width="25%">
-      <img src="https://em-content.zobj.net/source/apple/391/face-with-open-mouth_1f62e.png" width="64"/><br/>
-      <b>Hold Mouth Open</b><br/>
-      <sub>Drag & Select</sub>
-    </td>
-  </tr>
-</table>
+| Gesture | Action | Description |
+|:-------:|:------:|-------------|
+| ↔️ | **Move Head** | Move Cursor around the screen |
+| 👄 | **Open Mouth** | Perform a Left Click |
+| 😉 | **Blink Both Eyes** | Perform a Right Click |
+| 😮 | **Hold Mouth Open** | Drag & Select (hold left click) |
 
-### Gesture Flow
+### How It Works
+
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   FACE MESH     │───▶│  GESTURE        │───▶│  MOUSE          │
@@ -113,6 +87,15 @@
    MediaPipe             Mouth/Eye              RobotJS
    Face Mesh               Analysis            Cross-Platform
 ```
+
+### Gesture Details
+
+| Action | How To Perform | Cooldown |
+|--------|----------------|----------|
+| **Left Click** | Open mouth quickly (brief) | 500ms |
+| **Right Click** | Blink both eyes at the same time | 600ms |
+| **Drag/Select** | Open mouth and hold for 1+ second | - |
+| **Move Cursor** | Tilt your head in any direction | Real-time |
 
 ---
 
@@ -168,7 +151,7 @@ npm run start
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ Project Structure
 
 ```
 senselink/
@@ -189,37 +172,17 @@ senselink/
 
 ---
 
-## � Technologies
+## 🔧 Technologies
 
-<table>
-  <tr>
-    <td align="center" width="20%">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" width="48" alt="Adobe"/><br/>
-      <b>Adobe Express SDK</b><br/>
-      <sub>Add-on Framework & Canvas API</sub>
-    </td>
-    <td align="center" width="20%">
-      <img src="https://developers.google.com/static/mediapipe/images/solutions/face-landmark-background.png" width="48" alt="MediaPipe"/><br/>
-      <b>MediaPipe Face Mesh</b><br/>
-      <sub>468 Facial Landmark Detection</sub>
-    </td>
-    <td align="center" width="20%">
-      <img src="https://huggingface.co/datasets/huggingface/brand-assets/resolve/main/hf-logo.png" width="48" alt="Hugging Face"/><br/>
-      <b>Hugging Face AI</b><br/>
-      <sub>Qwen2.5-VL-72B Vision Model</sub>
-    </td>
-    <td align="center" width="20%">
-      <img src="https://unsplash-assets.imgix.net/marketing/press/unsplash-symbol-black.png" width="48" alt="Unsplash"/><br/>
-      <b>Unsplash API</b><br/>
-      <sub>HD Stock Photo Search</sub>
-    </td>
-    <td align="center" width="20%">
-      <img src="https://robotjs.io/img/logo.png" width="48" alt="RobotJS"/><br/>
-      <b>RobotJS</b><br/>
-      <sub>Cross-Platform Mouse Control</sub>
-    </td>
-  </tr>
-</table>
+### Core Stack
+
+| Technology | Purpose | Logo |
+|------------|---------|------|
+| **Adobe Express SDK** | Add-on Framework & Canvas API | ![Adobe](https://img.shields.io/badge/Adobe-FF0000?style=flat-square&logo=adobe&logoColor=white) |
+| **MediaPipe Face Mesh** | 468 Facial Landmark Detection | ![Google](https://img.shields.io/badge/MediaPipe-4285F4?style=flat-square&logo=google&logoColor=white) |
+| **Hugging Face AI** | Qwen2.5-VL-72B Vision Model | ![HuggingFace](https://img.shields.io/badge/HuggingFace-FFD21E?style=flat-square&logo=huggingface&logoColor=black) |
+| **Unsplash API** | HD Stock Photo Search | ![Unsplash](https://img.shields.io/badge/Unsplash-000000?style=flat-square&logo=unsplash&logoColor=white) |
+| **RobotJS** | Cross-Platform Mouse Control | ![Node.js](https://img.shields.io/badge/RobotJS-339933?style=flat-square&logo=nodedotjs&logoColor=white) |
 
 ### Tech Stack Breakdown
 
@@ -274,7 +237,7 @@ SenseLink was designed with **accessibility as the core mission**:
 
 ---
 
-## � Performance
+## 📊 Performance
 
 | Metric | Value |
 |--------|-------|
@@ -343,7 +306,9 @@ Contributions are welcome! Here's how you can help:
 
 ## 📝 License
 
-This project is provided for **educational and accessibility-focused purposes**. Please consult legal counsel for any commercial deployment.
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+Copyright (c) 2026 Piyush Joshi
 
 ---
 
@@ -360,7 +325,7 @@ This project is provided for **educational and accessibility-focused purposes**.
 <p align="center">
   <b>Built with ❤️ for inclusive design</b>
   <br><br>
-  <a href="#-what-is-senselink">
+  <a href="#-senselink">
     <img src="https://img.shields.io/badge/⬆_Back_to_Top-7c3aed?style=for-the-badge" alt="Back to Top"/>
   </a>
 </p>
