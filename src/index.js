@@ -2017,7 +2017,14 @@ function startSpeaking() {
         return;
     }
 
-    // Save current tracking state before pausing
+    // Clear the text area for a fresh start when speaking begins
+    if (state.targetTextArea.tagName === 'TEXTAREA' || state.targetTextArea.tagName === 'INPUT') {
+        state.targetTextArea.value = '';
+    } else if (state.targetTextArea.contentEditable === 'true') {
+        state.targetTextArea.innerHTML = '';
+    }
+
+    // Save current tracking state before pausing (Lines 2021-2024 in original)
     state.preSpeechTrackingState = {
         isRunning: state.isRunning,
         isCalibrated: state.isCalibrated
