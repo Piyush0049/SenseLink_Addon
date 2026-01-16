@@ -238,39 +238,8 @@
             </div>
         </section>
 
-        <!-- Settings Panel -->
-        <section class="settings-panel">
-            <div class="panel-header">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="3" />
-                    <path
-                        d="M12 1v4m0 14v4M4.22 4.22l2.83 2.83m9.9 9.9l2.83 2.83M1 12h4m14 0h4M4.22 19.78l2.83-2.83m9.9-9.9l2.83-2.83" />
-                </svg>
-                <span>Settings</span>
-            </div>
-
-            <div class="setting-item">
-                <div class="setting-info">
-                    <span class="setting-label">Sensitivity</span>
-                    <span class="setting-desc">Control movement range</span>
-                </div>
-                <div class="setting-control">
-                    <input type="range" id="sensitivitySlider" min="0.5" max="3" step="0.1" value="2">
-                    <span class="setting-value" id="sensitivityValue">2.0</span>
-                </div>
-            </div>
-
-            <div class="setting-item">
-                <div class="setting-info">
-                    <span class="setting-label">Smoothness</span>
-                    <span class="setting-desc">Cursor movement fluidity</span>
-                </div>
-                <div class="setting-control">
-                    <input type="range" id="smoothingSlider" min="0.1" max="0.9" step="0.1" value="0.4">
-                    <span class="setting-value" id="smoothingValue">0.4</span>
-                </div>
-            </div>
-        </section>
+        <!-- Settings Panel (Hidden - Now in Modal) -->
+        <!-- Original settings moved to modal overlay -->
 
         <!-- Gestures Guide -->
         <section class="gestures-panel">
@@ -320,6 +289,61 @@
             <span class="divider">•</span>
             <span>Hands-Free Mouse Control</span>
         </footer>
+    </div>
+
+    <!-- Sticky Settings Button -->
+    <button class="sticky-settings-btn" id="stickySettingsBtn" aria-label="Open Settings">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3" />
+            <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+        </svg>
+    </button>
+
+    <!-- Settings Modal Overlay -->
+    <div class="settings-modal-overlay" id="settingsModalOverlay">
+        <div class="settings-modal">
+            <div class="settings-modal-header">
+                <div class="settings-modal-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3" />
+                        <path
+                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                    </svg>
+                    <span>Settings</span>
+                </div>
+                <button class="settings-modal-close" id="settingsModalClose" aria-label="Close Settings">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="settings-modal-body">
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <span class="setting-label">Sensitivity</span>
+                        <span class="setting-desc">Control movement range</span>
+                    </div>
+                    <div class="setting-control">
+                        <input type="range" id="sensitivitySlider" min="0.5" max="3" step="0.1" value="2">
+                        <span class="setting-value" id="sensitivityValue">2.0</span>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <span class="setting-label">Smoothness</span>
+                        <span class="setting-desc">Cursor movement fluidity</span>
+                    </div>
+                    <div class="setting-control">
+                        <input type="range" id="smoothingSlider" min="0.1" max="0.9" step="0.1" value="0.4">
+                        <span class="setting-value" id="smoothingValue">0.4</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Feedback Toast -->

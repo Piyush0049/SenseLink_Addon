@@ -490,6 +490,9 @@ function setupEventListeners() {
     if (elements.suggestImagesBtn) {
         elements.suggestImagesBtn.addEventListener('click', triggerAISuggestions);
     }
+
+    // Settings Modal
+    setupSettingsModal();
 }
 
 // ============================================
@@ -2555,6 +2558,54 @@ function handleAISuggestionError(message) {
     }
 
     showFeedback(`❌ ${message}`);
+}
+
+// ============================================
+// Settings Modal
+// ============================================
+
+/**
+ * Setup event listeners for the settings modal
+ */
+function setupSettingsModal() {
+    const stickyBtn = document.getElementById('stickySettingsBtn');
+    const modalOverlay = document.getElementById('settingsModalOverlay');
+    const closeBtn = document.getElementById('settingsModalClose');
+
+    if (!stickyBtn || !modalOverlay || !closeBtn) {
+        console.log('⚙️ Settings modal elements not found');
+        return;
+    }
+
+    // Open modal when sticky button is clicked
+    stickyBtn.addEventListener('click', () => {
+        modalOverlay.classList.add('active');
+        console.log('⚙️ Settings modal opened');
+    });
+
+    // Close modal when close button is clicked
+    closeBtn.addEventListener('click', () => {
+        modalOverlay.classList.remove('active');
+        console.log('⚙️ Settings modal closed');
+    });
+
+    // Close modal when clicking outside the modal (on overlay)
+    modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) {
+            modalOverlay.classList.remove('active');
+            console.log('⚙️ Settings modal closed (overlay click)');
+        }
+    });
+
+    // Close modal when pressing Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+            modalOverlay.classList.remove('active');
+            console.log('⚙️ Settings modal closed (Escape key)');
+        }
+    });
+
+    console.log('⚙️ Settings modal initialized');
 }
 
 // ============================================
