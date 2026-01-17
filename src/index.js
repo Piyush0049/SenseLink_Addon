@@ -538,7 +538,6 @@ function connectWebSocket() {
             try {
                 const data = JSON.parse(event.data);
                 if (data.type === 'position') {
-                    // Update tracked position if needed
                 } else if (data.type === 'explanation') {
                     handleExplanation(data.data);
                 } else if (data.type === 'design_advice') {
